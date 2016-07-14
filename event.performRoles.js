@@ -13,8 +13,15 @@ module.exports = {
 
         for (let name in Game.creeps) {
 
+
+
             var creep = Game.creeps[name];
             //console.log(creep.name);
+
+            //sound-off
+            if(creep.memory.role == 'constructor'){
+                creep.say(creep.memory.group);
+            }
 
             //safemode
             if(_.sum(Game.creeps, (c) => c.memory.role != undefined) < 4) {

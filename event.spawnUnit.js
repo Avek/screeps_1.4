@@ -35,7 +35,7 @@ module.exports = {
         var numberOfBetas = _.sum(Game.creeps, (c) => c.memory.group == 'beta');
         var numberOfEnemies = Game.rooms.W31S47.find(FIND_HOSTILE_CREEPS).length;
         Game.rooms.W31S47.memory.tickTracker++;
-        Game.overpop = numberOfCreeps < maxCreeps;
+        Game.underpop = numberOfCreeps < maxCreeps;
         console.log("(#" + numberOfCreeps + ")H" + numberOfHarvesters + "/U" + numberOfUpgraders +
             "/C" + numberOfConstructor + "/R" + numberOfRepairers + "/B" + numberOfBerserkers +
             "/Col" + numberOfCollectors + "/Tr" + numberOfTransporters + "/Sen" + numberOfSentries +
@@ -75,7 +75,7 @@ module.exports = {
         }
 
         //initially planned on not spawning anything... buut...
-        if (Game.overpop) {
+        if (Game.underpop) {
             if(numberOfCollectors<minNumberOfCollectors){
                 var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
                 if(groupRatio){
@@ -115,7 +115,7 @@ module.exports = {
             }
             else if(numberOfUpgraders<minNumberOfUpgraders) {
                 var newUnitName = Game.spawns.Spawn1.createCreep(body, undefined,
-                    {working: false, role: 'upgrader'});
+                    {working: false, group: 'beta', role: 'upgrader'});
                 console.log("Spawn1 spawning upgrader "+newUnitName);
             }
             else if(numberOfSentries<minNumberOfSentries) {

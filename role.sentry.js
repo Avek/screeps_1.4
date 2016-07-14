@@ -8,7 +8,8 @@ module.exports = {
         // var kill = Game.getObjectById('57845b9015d4809e52390dc1');
         // creep.attack(kill);
         // creep.moveTo(kill);
-        //creep.moveTo(40, 45);
+        //creep.drop(RESOURCE_ENERGY);
+        //creep.moveTo(30, 30);
         //return;
         var enemies = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
         var enemy_structures = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
@@ -19,14 +20,14 @@ module.exports = {
                 creep.say("Die enemy!");
                 creep.moveTo(enemies);
             }
-        } else {
+        } else if(false) {
             creep.say("covering transporters");
             if(creep.memory.group == undefined){
-                var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'bravo') > _.sum(Game.creeps, (c) => c.memory.group == 'charlie');
+                var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
                 if(groupRatio){
-                    creep.memory.group= 'charlie';
+                    creep.memory.group= 'beta';
                 }else
-                    creep.memory.group= 'bravo';
+                    creep.memory.group= 'alpha';
             }
             roleTransporter.run(creep);
         }
