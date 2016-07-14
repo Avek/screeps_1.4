@@ -26,6 +26,7 @@ module.exports = {
             //console.log(creep.transfer(structure, RESOURCE_ENERGY));;
             console.log(creep.name+" -> " +target.name);
             var ret = creep.transfer(target, RESOURCE_ENERGY);
+            console.log(ret);
             if (ret == ERR_NOT_IN_RANGE) {
                 console.log(creep.name+" is not in range of"+target);
                 creep.drop(RESOURCE_ENERGY);
