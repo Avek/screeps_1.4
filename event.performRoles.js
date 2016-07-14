@@ -19,7 +19,7 @@ module.exports = {
             //console.log(creep.name);
 
             //sound-off
-            if(creep.memory.role == 'constructor'){
+            if(creep.memory.role == 'transporter'){
                 creep.say(creep.memory.group);
             }
 
@@ -54,17 +54,16 @@ module.exports = {
 
             if (creep.memory.role == 'collector') {
                 roleCollector.run(creep);
-            }else {
+            }
+
+            if (creep.memory.role == 'transporter') {
+                roleTransporter.run(creep);
                 var target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
                 if(target) {
                     if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(target);
                     }
                 }
-            } // comment
-
-            if (creep.memory.role == 'transporter') {
-                roleTransporter.run(creep);
             }
 
             if (creep.memory.role == 'sentry') {
@@ -76,9 +75,18 @@ module.exports = {
         });
         for (let tower of towers) {
             var target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+
             if (target != undefined) {
                 tower.attack(target);
+            } else if(tower.energy > 500){ //reserve shots for baddies!
+
+                var structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => s.hits < 10000 && s.structureType == STRUCTURE_RAMPART
+                });
+
             }
+                
+            
         }
     }
 };

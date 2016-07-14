@@ -9,8 +9,8 @@ module.exports = {
         // creep.attack(kill);
         // creep.moveTo(kill);
         //creep.drop(RESOURCE_ENERGY);
-        //creep.moveTo(30, 30);
-        //return;
+/*        creep.moveTo(30, 30);
+        return;*/
         var enemies = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
         var enemy_structures = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
         var enemy_spawn = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS);

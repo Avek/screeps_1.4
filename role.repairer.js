@@ -23,14 +23,14 @@ module.exports = {
             if (creep.memory.subrole = 'walls') {
 
                 var structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => s.hits < 5000 && s.structureType == STRUCTURE_TOWER
+                    filter: (s) => s.hits < 10000 && s.structureType == STRUCTURE_TOWER
                 });
                 var structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => s.hits < s.hitsMax && s.structureType == STRUCTURE_RAMPART
+                    filter: (s) => s.hits < 10000 && s.structureType == STRUCTURE_RAMPART
                 });
                 if(structure == undefined) {
                     var structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                        filter: (s) => s.hits < 5000 && s.structureType == STRUCTURE_WALL
+                        filter: (s) => s.hits < 10000 && s.structureType == STRUCTURE_WALL
                     });
                 }
             }else {

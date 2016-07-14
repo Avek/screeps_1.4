@@ -17,13 +17,14 @@ module.exports = {
         if (creep.memory.working == true) {
             //not in range move to spawn
             var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                filter: (s) => (s.structureType == STRUCTURE_EXTENSION
-                || s.structureType == STRUCTURE_TOWER)
-                && s.energy < s.energyCapacity
+            filter: (s) => (s.structureType == STRUCTURE_SPAWN)
+            && s.energy < s.energyCapacity
             });
+
             if (target == undefined) {
                 var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                    filter: (s) => (s.structureType == STRUCTURE_SPAWN)
+                    filter: (s) => (s.structureType == STRUCTURE_EXTENSION
+                    || s.structureType == STRUCTURE_TOWER)
                     && s.energy < s.energyCapacity
                 });
             }
@@ -31,7 +32,7 @@ module.exports = {
             if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
 
-                creep.say((target.id.substr(target.id.length - 5)));
+                //creep.say((target.id.substr(target.id.length - 5)));
             }
         }
         else {
@@ -51,8 +52,8 @@ module.exports = {
                 )});
                 creep.moveTo(target);
             }
-                else
-                creep.say((target.id.substr(target.id.length - 5)));
+                else;
+                //creep.say((target.id.substr(target.id.length - 5)));
             //fill up transporters first
             //console.log(creep.name);
             //console.log(container.energyAvailable);

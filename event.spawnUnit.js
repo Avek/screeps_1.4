@@ -36,7 +36,7 @@ module.exports = {
         var numberOfEnemies = Game.rooms.W31S47.find(FIND_HOSTILE_CREEPS).length;
         Game.rooms.W31S47.memory.tickTracker++;
         Game.underpop = numberOfCreeps < maxCreeps;
-        console.log("(#" + numberOfCreeps + ")H" + numberOfHarvesters + "/U" + numberOfUpgraders +
+        console.log("(#" + numberOfCreeps + "/U" + numberOfUpgraders +
             "/C" + numberOfConstructor + "/R" + numberOfRepairers + "/B" + numberOfBerserkers +
             "/Col" + numberOfCollectors + "/Tr" + numberOfTransporters + "/Sen" + numberOfSentries +
             " || Energy: " + Game.spawns.Spawn1.room.energyAvailable + "/" + Game.spawns.Spawn1.room.energyCapacityAvailable +
@@ -56,17 +56,17 @@ module.exports = {
                 else //don't spawn any other unit, something something tea and wait for this whole thing to blow over
                     return;
         }
-        if (numberOfCreeps < 7 || Game.spawns.Spawn1.room.energyAvailable < 500) {
+        if (numberOfCreeps < 7 || Game.spawns.Spawn1.room.energyCapacityAvailable < 500) {
             console.log("level 1 spawns");
             var body = [WORK, CARRY, MOVE, MOVE];
             var collectorBody = [WORK, CARRY, WORK, MOVE];
             var transporterBody = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE];
             var sentryBody = [TOUGH, TOUGH, TOUGH, TOUGH, CARRY, MOVE, CARRY, MOVE, ATTACK, ATTACK, ATTACK];
-        }else if (numberOfCreeps > 7 && Game.spawns.Spawn1.room.energyAvailable >= 500 && Game.spawns.Spawn1.room.energyAvailable < 800){
+        }else if (numberOfCreeps > 7 && Game.spawns.Spawn1.room.energyAvailable >= 500 && Game.spawns.Spawn1.room.energyCapacityAvailable < 800){
             console.log("level 2 spawns");
             var collectorBody = [WORK, WORK, WORK, CARRY, WORK, MOVE];
             var body = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE];
-        }else if (numberOfCreeps > 7 && Game.spawns.Spawn1.room.energyAvailable >= 500) {
+        }else if (numberOfCreeps > 7 && Game.spawns.Spawn1.room.energyCapacityAvailable >= 500) {
             console.log("level 3 spawns");
             var body = [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE];
             var collectorBody = [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE];
@@ -74,7 +74,6 @@ module.exports = {
             var sentryBody = [TOUGH, TOUGH, TOUGH, TOUGH, CARRY, MOVE, CARRY, MOVE, ATTACK, ATTACK, ATTACK];
         }
 
-        //initially planned on not spawning anything... buut...
         if (Game.underpop) {
             if(numberOfCollectors<minNumberOfCollectors){
                 var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
@@ -86,8 +85,6 @@ module.exports = {
                         {working: false, group: 'alpha', role: 'collector'});
                 console.log("Spawn1 spawning collector " + newUnitName);
             }
-            //upgraders are top priority
-            //then harvesters
             else if(numberOfTransporters<minNumberOfTransporters){
                 var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
                 if(groupRatio) {
@@ -98,11 +95,11 @@ module.exports = {
                         {working: false, group: 'alpha', role: 'transporter'});
                 console.log("Spawn1 spawning transporter " + newUnitName);
             }
-            else if(false&&numberOfHarvesters<minNumberOfHarvesters){
+/*            else if(false&&numberOfHarvesters<minNumberOfHarvesters){
                 var newUnitName = Game.spawns.Spawn1.createCreep(body, undefined,
                     {working: false, role: 'harvester'});
                 console.log("Spawn1 spawning harvester " + newUnitName);
-            }
+            }*/
             else if(numberOfRepairers<minNumberOfRepairers){
                 var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
                 if(groupRatio) {
