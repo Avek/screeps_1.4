@@ -1,64 +1,52 @@
-var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
-var roleConstructor = require('role.constructor');
+var eventSpawnUnit = require('event.spawnUnit');
+var eventSetMemory = require('event.setMemory');
+var eventPerformRoles = require('event.performRoles');
+
+
+//var roomLogPath = "c:\\Users\\dougb\\AppData\\Local\\Screeps\\scripts\\screeps.com\\default\\room.log";
+//var roomLog = new File(roomLogPath);
+//roomLog.open("w");
 
 module.exports.loop = function () {
+    //Game.rooms.W31S47.memory.harvest = 0;
+//49,35 EAST EDGE ROOM 1
+//5,49 SOUTH EDGE ROOM 2
+// 25,25 ENEMY SPAWN ROOM 3
+    // Game.creeps.MOUNTAIN.moveTo(25,25);
+    // Game.creeps.SIR_GREGOR.moveTo(25,25);
+    //Game.spawns.Spawn1.createCreep([ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE], 'SIR_GREGOR', undefined);
 
-    //clear memory
-    for(let name in Memory.creeps){
 
-        if(Game.creeps[name] == undefined) {
-            delete Memory.creeps[name];
-        }
-        //Update all creep memory below this line...
-        //Game.creeps[name].memory.destination = 0;
-        //Game.creeps.Josiah.role= 'constructor'
-        //Game.creeps[name].role = 'constructor'
-    }
-    var minNumberOfHarvesters = 4;
-    var minNumberOfUpgraders = 2;
-    //find all creeps in memory and return number of harvesters
-    var numberOfHarvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
-    var numberOfUpgraders = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
-    var numberOfConstructor = _.sum(Game.creeps, (c) => c.memory.role == 'constructor');
-    console.log("H/U/C "+numberOfHarvesters+"/"+numberOfUpgraders+"/"+numberOfConstructor+
-        " || Energy: "+Game.spawns.Spawn1.energy + "/"+Game.spawns.Spawn1.energyCapacity);
-    if (Game.spawns.Spawn1.energyCapacity == Game.spawns.Spawn1.energy) {
-        console.log("Spawn1 is full on energy: " + Game.spawns.Spawn1.energy + "/" + Game.spawns.Spawn1.energyCapacity);
+    /*
+     Game.creeps.Cooper.moveTo(27,15);
+     Game.creeps.Cooper.pickup(Game.creeps.Cooper.pos.findClosestByRange(FIND_DROPPED_ENERGY));
+     Game.creeps.Cooper.moveTo(Game.creeps.Cooper.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+     filter: (s) => (s.structureType == STRUCTURE_EXTENSION
+     && s.energy < s.energyCapacity)
+     }));
+     Game.creeps.Gavin.transfer(Game.creeps.Cooper.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+     filter: (s) => (s.structureType == STRUCTURE_EXTENSION
+     && s.energy < s.energyCapacity)
+     }), RESOURCE_ENERGY)
+     var target = Game.creeps.Gavin.pos.findClosestByRange(FIND_DROPPED_ENERGY);
+     console.log(Game.creeps.Gavin.carry.energy+ " \< "+ Game.creeps.Gavin.carryCapacity);
+     if(Game.creeps.Gavin.carry.energy < Game.creeps.Gavin.carry.capacity ){
+     if(Game.creeps.Gavin.pickup(target, Game.creeps.Gavin.carryCapacity) == ERR_NOT_IN_RANGE)
+     Game.creeps.Gavin.moveTo(27,15);
+     return;
+     }else{
+     var structure = Game.creeps.Gavin.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+     filter: (s) => (s.structureType == STRUCTURE_EXTENSION
+     && s.energy < s.energyCapacity)
+     });
+     if (Game.creeps.Gavin.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+     // Game.creeps.Gavin.moveTo(structure);
+     }
+     }*/
 
-        if(numberOfHarvesters>minNumberOfHarvesters) {
-            if(numberOfUpgraders<minNumberOfUpgraders){
-                var newUnitName = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE, MOVE], undefined,
-                    {working: false, role: 'upgrader'});
-                console.log("Spawn1 spawned upgrader "+newUnitName);
-            }
-            else {
-                var newUnitName = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE, MOVE], undefined,
-                    {working: false, role: 'constructor'});
-                console.log("Spawn1 spawned constructor " + newUnitName);
-            }
-        }
-        else {
-            var newUnitName = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE, MOVE], undefined,
-                {working: false, role: 'harvester'});
-            console.log("Spawn1 spawned harvester "+newUnitName);
-        }
-    }
+    //console.log("TICK!!=======================================================");
+    eventSetMemory.run();
+    eventSpawnUnit.run();
+    eventPerformRoles.run();
 
-    for (let name in Game.creeps) {
-        var creep = Game.creeps[name];
-
-        if (creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
-        }
-
-        if (creep.memory.role == 'upgrader') {
-            roleUpgrader.run(creep);
-        }
-
-        if (creep.memory.role == 'constructor') {
-            roleConstructor.run(creep);
-        }
-
-    }
 }
