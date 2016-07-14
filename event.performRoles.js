@@ -54,7 +54,7 @@ module.exports = {
                         creep.moveTo(target);
                     }
                 }
-            }
+            } // comment
 
             if (creep.memory.role == 'transporter') {
                 roleTransporter.run(creep);
