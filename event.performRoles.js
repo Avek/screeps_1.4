@@ -70,7 +70,7 @@ module.exports = {
                 roleSentry.run(creep);
             }
         }
-        var towers = Game.rooms.W31S47.find(FIND_STRUCTURES, {
+        var towers = Game.rooms.W44N32.find(FIND_STRUCTURES, {
             filter: (s) => s.structureType == STRUCTURE_TOWER
         });
         for (let tower of towers) {

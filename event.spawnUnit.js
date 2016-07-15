@@ -33,15 +33,15 @@ module.exports = {
         var numberOfSentries = _.sum(Game.creeps, (c) => c.memory.role == 'sentry');
         var numberOfAlphas = _.sum(Game.creeps, (c) => c.memory.group == 'alpha');
         var numberOfBetas = _.sum(Game.creeps, (c) => c.memory.group == 'beta');
-        var numberOfEnemies = Game.rooms.W31S47.find(FIND_HOSTILE_CREEPS).length;
-        Game.rooms.W31S47.memory.tickTracker++;
+        var numberOfEnemies = Game.rooms.W44N32.find(FIND_HOSTILE_CREEPS).length;
+        Game.rooms.W44N32.memory.tickTracker++;
         Game.underpop = numberOfCreeps < maxCreeps;
         console.log("(#" + numberOfCreeps + "/U" + numberOfUpgraders +
             "/C" + numberOfConstructor + "/R" + numberOfRepairers + "/B" + numberOfBerserkers +
             "/Col" + numberOfCollectors + "/Tr" + numberOfTransporters + "/Sen" + numberOfSentries +
             " || Energy: " + Game.spawns.Spawn1.room.energyAvailable + "/" + Game.spawns.Spawn1.room.energyCapacityAvailable +
-            " || Energy/100T: " + (Game.rooms.W31S47.memory.harvest) / (Game.rooms.W31S47.memory.tickTracker) +
-            " || Enemies: " + Game.rooms.W31S47.find(FIND_HOSTILE_CREEPS).length +
+            " || Energy/100T: " + (Game.rooms.W44N32.memory.harvest) / (Game.rooms.W44N32.memory.tickTracker) +
+            " || Enemies: " + Game.rooms.W44N32.find(FIND_HOSTILE_CREEPS).length +
             " || /Alpha"+numberOfAlphas+"/Beta"+numberOfBetas);
 
 
@@ -61,11 +61,12 @@ module.exports = {
             var body = [WORK, CARRY, MOVE, MOVE];
             var collectorBody = [WORK, CARRY, WORK, MOVE];
             var transporterBody = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE];
-            var sentryBody = [TOUGH, TOUGH, TOUGH, TOUGH, CARRY, MOVE, CARRY, MOVE, ATTACK, ATTACK, ATTACK];
+            var sentryBody = [TOUGH, TOUGH, TOUGH, TOUGH, CARRY, MOVE, ATTACK, ATTACK];
         }else if (numberOfCreeps > 7 && Game.spawns.Spawn1.room.energyAvailable >= 500 && Game.spawns.Spawn1.room.energyCapacityAvailable < 800){
             console.log("level 2 spawns");
             var collectorBody = [WORK, WORK, WORK, CARRY, WORK, MOVE];
             var body = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE];
+            var sentryBody = [TOUGH, TOUGH, TOUGH, TOUGH, CARRY, MOVE, CARRY, MOVE, ATTACK, ATTACK, ATTACK];
         }else if (numberOfCreeps > 7 && Game.spawns.Spawn1.room.energyCapacityAvailable >= 500) {
             console.log("level 3 spawns");
             var body = [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE];
@@ -172,3 +173,4 @@ module.exports = {
  TOUGH	10	No effect, just additional hit points to the creep's body.
 
  */
+ 
