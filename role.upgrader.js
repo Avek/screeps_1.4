@@ -24,20 +24,41 @@ module.exports = {
             //creep is not working harvest energy
             //if this creep has been running back and forth too long just stick to one source
             //if(creep.pos.inRangeTo(FIND_SOURCES))
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)});
-            creep.moveTo(target);
-            if(target == undefined){
-                target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: (s) => (
-                    s.memory.group == creep.memory.group &&
-                    s.memory.role == 'collector'
-                )});
-                creep.moveTo(target);
-                return;
+
+/*            try{
+                var storage = _.sum(creep.room.storage.store);
             }
-            //console.log(container+" transferring "+(creep.carryCapacity-creep.carry.value)+" to "+creep.name);
-            //console.log(creep.name+"-DEBUG: "+_.sum(creep.carry)+" <---NULL?-->"+creep.carryCapacity);
-            console.log(target.transfer(creep, RESOURCE_ENERGY, creep.carryCapacity-_.sum(creep.carry))+
-                " status transferring from container to "+creep.name);
+            catch(err){
+                console.log("Error summing storage, maybe no storage?");
+            }*/
+
+            if(creep.room.storage){
+                var storage = _.sum(creep.room.storage.store);
+                if(storage){
+                    var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_STORAGE)});
+                }else {
+                    var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)});
+                    creep.moveTo(target);
+                    if (target == undefined) {
+                        target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {
+                            filter: (s) => (
+                                s.memory.group == creep.memory.group &&
+                                s.memory.role == 'collector'
+                            )
+                        });
+                        creep.moveTo(target);
+                        return;
+                    }
+                }
+                //console.log(container+" transferring "+(creep.carryCapacity-creep.carry.value)+" to "+creep.name);
+                //console.log(creep.name+"-DEBUG: "+_.sum(creep.carry)+" <---NULL?-->"+creep.carryCapacity);
+                /*console.log(target.transfer(creep, RESOURCE_ENERGY, creep.carryCapacity-_.sum(creep.carry))+
+                    " status transferring from container to "+creep.name);*/
+            }
+            var retval = creep.withdraw(target, RESOURCE_ENERGY);
+            if(retval == ERR_NOT_IN_RANGE){
+                creep.moveTo(target);
+            }
             /*
              var source = creep.pos.findClosestByPath(FIND_SOURCES);
              //not in range move to source

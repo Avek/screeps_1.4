@@ -5,7 +5,8 @@ var roleTransporter = require('role.transporter');
 module.exports = {
     run: function(creep) {
 
-        if(_.sum(Game.creeps, (c) => c.memory.role == 'collector') < 2){
+
+        if(false&&_.sum(Game.creeps, (c) => c.memory.role == 'collector' && c.room.name == creep.room.name) < 2){
             creep.say("covering collectors");
             if(creep.memory.group == undefined){
                 var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
@@ -14,6 +15,7 @@ module.exports = {
                 }else
                     creep.memory.group= 'alpha';
             }
+            //roleTransporter.run(creep);
             roleCollector.run(creep);
             return;
         }
@@ -34,14 +36,11 @@ module.exports = {
             //not in range move to spawn
             var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
             //console.log("constructionSite:"+constructionSite);
-            if (constructionSite != undefined) {
-                if (creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(constructionSite);
-                }
-            } else if(_.sum(Game.creeps, (c) => c.memory.role == 'transporter') < 2) {
+
+             if(false&&_.sum(Game.creeps, (c) => c.memory.role == 'transporter' && c.room.name == creep.room.name) == 0) {
                 creep.say("covering transporters");
                 if(creep.memory.group != 'alpha'&&creep.memory.group != 'beta'){
-                    var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha') > _.sum(Game.creeps, (c) => c.memory.group == 'beta');
+                    var groupRatio = _.sum(Game.creeps, (c) => c.memory.group == 'alpha' && c.room.name == creep.room.name) > _.sum(Game.creeps, (c) => c.memory.group == 'beta'  && c.room.name == creep.room.name);
                     if(groupRatio){
                         creep.memory.group= 'beta';
                     }else
@@ -49,8 +48,12 @@ module.exports = {
                 }
                 roleTransporter.run(creep);
                 return;
+            }else if (constructionSite != undefined) {
+                if (creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
+                    console.log(creep.name+" : moving -- "+creep.moveTo(constructionSite)+"!!!!");
+                }
             }else{
-
+                
                 roleUpgrader.run(creep);
                 return;
             }
@@ -58,24 +61,16 @@ module.exports = {
         else {
             //creep is not working harvest energy
             //if we have too many units just pull energy from spawn
-            if(_.sum(Game.creeps, (c) => c.memory.role != undefined) >= 14){
-                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_SPAWN
-                || s.structureType == STRUCTURE_EXTENSION)});
-                creep.moveTo(target);
-                console.log(creep.name+" "+"("+creep.carryCapacity+"-"+_.sum(creep.carry)+") is pulling from "+target);
-                creep.withdraw(target, RESOURCE_ENERGY, creep.carryCapacity-_.sum(creep.carry));
-                return;
-                //console.log(target+" to "+creep.name);
-            }
-
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)});
+            var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                   filter: (s) => (s.structureType == STRUCTURE_STORAGE)});
 
             if(target == undefined){
-                target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: (s) => (
-                    s.memory.group == creep.memory.group &&
-                    s.memory.role == 'collector'
-                )});
-                creep.moveTo(target);
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                   filter: (s) => (s.structureType == 'container')});
+            }
+            
+            if(target == undefined){
+                creep.say("hmf...");
                 return;
             }
 

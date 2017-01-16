@@ -63,13 +63,15 @@ module.exports = {
 
             if(creep.memory.group=='alpha') {
                 //var container = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)});
-                target = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)})[0];
+                target = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER
+                && s.energy > 0)})[0];
             }else{
-                target = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)})[1];
+                target = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER
+                && s.energy > 0)})[1];
             }
             if(target==undefined){
+
                 target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: (s) => (
-                    s.memory.group == creep.memory.group &&
                     s.memory.role == 'collector'
                 )});
                 creep.moveTo(target);
@@ -80,9 +82,9 @@ module.exports = {
             //console.log(creep.name);
             //console.log(container.energyAvailable);
             if (((creep.carryCapacity-_.sum(creep.carry))>200)){
-                container.transfer(creep, RESOURCE_ENERGY, 75);
+                target.transfer(creep, RESOURCE_ENERGY, 75);
             }
-            container.transfer(creep, RESOURCE_ENERGY, creep.carryCapacity-_.sum(creep.carry));
+            target.transfer(creep, RESOURCE_ENERGY, creep.carryCapacity-_.sum(creep.carry));
             // find closest source
             // var source = creep.pos.findClosestByPath(FIND_SOURCES);
             // // try to harvest energy, if the source is not in range

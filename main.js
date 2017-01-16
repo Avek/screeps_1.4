@@ -1,52 +1,141 @@
-var eventSpawnUnit = require('event.spawnUnit');
+var eventSpawnUnit = require('event.spawnUnit2.0');
+var eventSpawnUnitCL1 = require('event.spawnUnitCL1');
 var eventSetMemory = require('event.setMemory');
 var eventPerformRoles = require('event.performRoles');
-
-
-//var roomLogPath = "c:\\Users\\dougb\\AppData\\Local\\Screeps\\scripts\\screeps.com\\default\\room.log";
-//var roomLog = new File(roomLogPath);
-//roomLog.open("w");
+var eventOutpost = require('event.outpost');
+var CPU = require('function.CPUmonitor');
 
 module.exports.loop = function () {
-    //Game.rooms.W31S47.memory.harvest = 0;
-//49,35 EAST EDGE ROOM 1
-//5,49 SOUTH EDGE ROOM 2
-// 25,25 ENEMY SPAWN ROOM 3
-    // Game.creeps.MOUNTAIN.moveTo(25,25);
-    // Game.creeps.SIR_GREGOR.moveTo(25,25);
-    //Game.spawns.Spawn1.createCreep([ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE], 'SIR_GREGOR', undefined);
 
 
-    /*
-     Game.creeps.Cooper.moveTo(27,15);
-     Game.creeps.Cooper.pickup(Game.creeps.Cooper.pos.findClosestByRange(FIND_DROPPED_ENERGY));
-     Game.creeps.Cooper.moveTo(Game.creeps.Cooper.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-     filter: (s) => (s.structureType == STRUCTURE_EXTENSION
-     && s.energy < s.energyCapacity)
-     }));
-     Game.creeps.Gavin.transfer(Game.creeps.Cooper.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-     filter: (s) => (s.structureType == STRUCTURE_EXTENSION
-     && s.energy < s.energyCapacity)
-     }), RESOURCE_ENERGY)
-     var target = Game.creeps.Gavin.pos.findClosestByRange(FIND_DROPPED_ENERGY);
-     console.log(Game.creeps.Gavin.carry.energy+ " \< "+ Game.creeps.Gavin.carryCapacity);
-     if(Game.creeps.Gavin.carry.energy < Game.creeps.Gavin.carry.capacity ){
-     if(Game.creeps.Gavin.pickup(target, Game.creeps.Gavin.carryCapacity) == ERR_NOT_IN_RANGE)
-     Game.creeps.Gavin.moveTo(27,15);
-     return;
-     }else{
-     var structure = Game.creeps.Gavin.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-     filter: (s) => (s.structureType == STRUCTURE_EXTENSION
-     && s.energy < s.energyCapacity)
-     });
-     if (Game.creeps.Gavin.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-     // Game.creeps.Gavin.moveTo(structure);
-     }
-     }*/
+    /* *******************************************************
+     * *******************************************************
+     * *******************************************************
+     * ******************MANUAL INPUT BLOCK*******************
+     * ********************KEEP CLEAR*************************
+     * *******************************************************
+     * *******************************************************
+     */
+     try{
+        var spawnRooms = _.filter(Game.rooms, r => r.controller && r.controller.my);
+        for(i in spawnRooms){
+            var room = spawnRooms[i];
+            console.log("DETECTED ROOM: " +room);
+        }
+     }catch(e){}
+     
+     //Game.spawns.Spawn1.createCreep([MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK], 'SIEGE'+Math.floor((Math.random() * 100) + 1), {role: 'viking',siege:true});
+     /*
+     	Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
+	ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK],
+'WARRIOR1_RA1', {role:'viking', guard:'RALLY1'}); //1100
+*/
 
-    //console.log("TICK!!=======================================================");
+/*
+     	Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
+	ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, HEAL],
+'WARRIOR1_RA1', {role:'base', subrole:'viking', explorer:true, waypoint:true, guard:'RALLY1'}); //1600
+     	Game.spawns.Spawn1.createCreep([MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
+	ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, HEAL],
+'WARRIOR2_RA1', {role:'base', subrole:'viking', explorer:true, waypoint:true, guard:'RALLY1'}); //1600
+*/
+/*
+*/
+/*
+Game.spawns.Spawn1.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
+CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'CON04b', {role:'base', subrole:'worker', explorer:true, waypoint:true, working:false}); //1800
+*/
+/*
+Game.spawns.Spawn1.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
+CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'CON04c', {role:'base', subrole:'worker', explorer:true, waypoint:true, working:false}); //1800
+Game.spawns.Spawn1.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
+CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'CON04d', {role:'base', subrole:'worker', explorer:true, waypoint:true, working:false}); //1800
+
+*/
+ 
+ 
+ /*
+ 
+    console.log("<h5><b><font color=\"lightblue\">"+ret+"</font></b></h5>");*/
+
+    /* *******************************************************
+     * *******************************************************
+     * *******************************************************
+     * ******************MANUAL INPUT BLOCK*******************
+     * ********************KEEP CLEAR*************************
+     * *******************************************************
+     * *******************************************************
+     */
+
+
+
+
+    var startTotalCpu = Game.cpu.getUsed();
+
+    var report = "CPU ITEMIZED-- "
+
+    var memoryCpu = Game.cpu.getUsed();
     eventSetMemory.run();
-    eventSpawnUnit.run();
-    eventPerformRoles.run();
+    var elapsed = Game.cpu.getUsed() - memoryCpu;
+    report += "Memory: " + elapsed + " ";
+
+    var spawnCpu = Game.cpu.getUsed();
+    try {
+        
+        if(true){// Game.spawns.Spawn1 && Game.spawns.Spawn1.room.mode != MODE_SIMULATION) {
+            if(Game.spawns.Spawn1){
+                //eventSpawnUnitCL1.run(Game.spawns.Spawn1, 8, 0);
+                eventSpawnUnit.run(Game.spawns.Spawn1);
+            }
+            if(Game.spawns.Spawn2){
+                eventOutpost.run(Game.spawns.Spawn2);
+                //eventSpawnUnitCL1.run(Game.spawns.Spawn2, 5, 0);//eventSpawnUnit.run(Game.spawns.Spawn2);
+            }
+            if(Game.spawns.Spawn3){
+                eventOutpost.run(Game.spawns.Spawn3);
+                //eventSpawnUnitCL1.run(Game.spawns.Spawn3, 5, 0);
+                //eventSpawnUnit.run(Game.spawns.Spawn3);//eventSpawnUnitCL1.run(Game.spawns.Spawn3, 5, 0);
+            }
+            if(Game.spawns.Spawn4){
+                //eventSpawnUnit.run(Game.spawns.Spawn4);
+            }
+            if(Game.spawns.Spawn5){
+                eventSpawnUnit.run(Game.spawns.Spawn5);
+            }
+        }else{//non simulation
+            console.log("ASDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+            eventPerformRoles.run();
+            return;
+
+        }
+
+        var rolesCPU = Game.cpu.getUsed();
+        eventPerformRoles.run();
+        var elapsed = Game.cpu.getUsed() - rolesCPU;
+        report += "Roles: " + elapsed + " ";
+    }catch(e){console.log("<b><font color=\"red\">"+"ERROR: "+e.stack+"</font>");}
+
+    var elapsed = Game.cpu.getUsed() - spawnCpu;
+
+    report += "Spawns: " + elapsed + " ";
+
+    console.log(report);
+
+    CPU.report();
+    var elapsed = Game.cpu.getUsed() - startTotalCpu;
+    if(Memory.cpuQueue)
+        Memory.cpuQueue.push(elapsed);
+    CPU.heatmap(elapsed);
+    if(elapsed > 9){
+        elapsed = "<b><font color=\"red\">"+elapsed+"</font>";
+    }else if(elapsed < 7){
+        elapsed = "<b><font color=\"green\">"+elapsed+"</font>";
+    }else{
+        elapsed = "<b><font color=\"yellow\">"+elapsed+"</font>";
+    }
+    console.log('Main has used '+elapsed+' CPU time, bucket contains: '+ Game.cpu.bucket );
 
 }
